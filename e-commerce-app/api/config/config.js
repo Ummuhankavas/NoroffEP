@@ -1,9 +1,10 @@
 const config = {
     db: {
-        host: "localhost",
-        user: "root",
-        password: "Nisan1453.",
-        database:"ecommerce"
+        host: process.env.DB_HOST,
+        user: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+        database:DB_NAME,
+        dialect:'mysql'
     },
 }
 
