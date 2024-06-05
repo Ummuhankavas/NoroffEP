@@ -1,40 +1,77 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
-const { Op } = require('sequelize');
 
-const register = async (req, res) => {
-  const { firstname, lastname, username, email, password, address, telephonenumber } = req.body;
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const { User } = require('../models');
+const { generateAccessToken } = require('../services/authService');
+
+const registerUser = async (req, res) => {
   try {
+    const { firstName, lastName, username, email, password, address, telephoneNumber } = req.body;
+
+    // Check if user with the same email or username already exists
+    const existingUser = await User.findOne({
+      where: {
+        [Op.or]: [{ email: email }, { username: username }]
+      }
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ error: 'User with the same email or username already exists.' });
+    }
+
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create user
     const user = await User.create({
-      firstname,
-      lastname,
+      firstName,
+      lastName,
       username,
       email,
       password: hashedPassword,
       address,
-      telephonenumber
+      telephoneNumber
     });
-    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '2h' });
-    res.status(201).json({ success: true, token });
+
+    // Generate access token
+    const accessToken = generateAccessToken(user);
+
+    return res.status(201).json({ accessToken });
   } catch (error) {
-    res.status(400).json({ success: false, error: error.message });
+    console.error('Error registering user:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-const login = async (req, res) => {
-  const { username, email, password } = req.body;
+const loginUser = async (req, res) => {
   try {
-    const user = await User.findOne({ where: { [Op.or]: [{ username }, { email }] } });
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      throw new Error('Invalid credentials');
+    const { email, password } = req.body;
+
+    // Find user by email
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
     }
-    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '2h' });
-    res.json({ success: true, token });
+
+    // Check password
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Incorrect password' });
+    }
+
+    // Generate access token
+    const accessToken = generateAccessToken(user);
+
+    return res.status(200).json({ accessToken });
   } catch (error) {
-    res.status(401).json({ success: false, error: error.message });
+    console.error('Error logging in user:', error);
+    return res.status(500).json({ error: 'Internal server error' });
   }
 };
 
-module.exports = { register, login };
+module.exports = {
+  registerUser,
+  loginUser
+};

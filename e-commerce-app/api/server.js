@@ -14,6 +14,23 @@ const app = express();
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
+const authRoutes = require('./routes/authRoutes');
+const productRoutes = require('./routes/productRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
+const brandRoutes = require('./routes/brandRoutes');
+const cartRoutes = require('./routes/cartRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+const membershipRoutes = require('./routes/membershipRoutes');
+
+app.use('/auth', authRoutes);
+app.use('/products', productRoutes);
+app.use('/categories', categoryRoutes);
+app.use('/brands', brandRoutes);
+app.use('/cart', cartRoutes);
+app.use('/orders', orderRoutes);
+app.use('/membership', membershipRoutes);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 let connection = mysql.createConnection({
     host: config.db.host,
     user: config.db.user,
@@ -28,8 +45,20 @@ connection.connect(function(err) {
     console.log("Connected to MySQL");
 });
 
+
+// Database connection and server start
+sequelize.authenticate().then(async () => {
+    await syncDatabase();
+    app.listen(process.env.PORT || 3000, () => {
+        console.log(`Example app listening on port ${port}`);
+    });
+  }).catch(error => {
+    console.error('Unable to connect to the database:', error);
+  });
+
 app.get("/", (req, res) => res.send("Hello Noroff Backend!"));
 
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
-});
+
+
+
+module.exports = app;
