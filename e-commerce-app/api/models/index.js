@@ -1,31 +1,27 @@
-'use strict';
-
 const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
-const process = require('process');
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require('../config/config.js')[process.env.NODE_ENV || 'development'];
+const config = require('../config/config.js');  // config.js dosyasını içe aktarıyoruz
 const db = {};
-const User = require('./user.model');
 
 let sequelize;
-if (config.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.use_env_variable], config);
+if (config.db.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.db.use_env_variable], {
+    dialect: config.db.dialect,  // Dialect burada da tanımlanmalı
+  });
 } else {
-  sequelize = new Sequelize(config.database, config.username, config.password, config);
+  sequelize = new Sequelize(config.db.database, config.db.user, config.db.password, {
+    host: config.db.host,
+    dialect: config.db.dialect,  // Dialect burada da tanımlanmalı
+  });
 }
 
 fs
   .readdirSync(__dirname)
   .filter(file => {
-    return (
-      file.indexOf('.') !== 0 &&
-      file !== basename &&
-      file.slice(-3) === '.js' &&
-      file.indexOf('.test.js') === -1
-    );
+    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
   })
   .forEach(file => {
     const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);

@@ -6,6 +6,14 @@ const mysql = require("mysql2");
 const config = require("./config/config");
 const jwt = require("jsonwebtoken");
 const { sequelize, syncDatabase } = require('./config/database');
+const authRoutes = require('./routes/authRoutes');
+const cartRoutes = require('./routes/cartRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+const productRoutes = require('./routes/productRoutes');
+const userRoutes = require('./routes/userRoutes');
+const membershipRoutes = require('./routes/membershipRoutes');
+
 require('dotenv').config();
 require('./config/passport');
 
@@ -14,13 +22,9 @@ const app = express();
 app.use(bodyParser.json());
 app.use(passport.initialize());
 
-const authRoutes = require('./routes/authRoutes');
-const productRoutes = require('./routes/productRoutes');
-const categoryRoutes = require('./routes/categoryRoutes');
-const brandRoutes = require('./routes/brandRoutes');
-const cartRoutes = require('./routes/cartRoutes');
-const orderRoutes = require('./routes/orderRoutes');
-const membershipRoutes = require('./routes/membershipRoutes');
+
+
+
 
 app.use('/auth', authRoutes);
 app.use('/products', productRoutes);
@@ -29,7 +33,9 @@ app.use('/brands', brandRoutes);
 app.use('/cart', cartRoutes);
 app.use('/orders', orderRoutes);
 app.use('/membership', membershipRoutes);
+app.use('/users', userRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 
 let connection = mysql.createConnection({
     host: config.db.host,

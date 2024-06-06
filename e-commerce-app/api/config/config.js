@@ -1,4 +1,4 @@
-require('dotenv').config(); // Ensure this line is at the top of the file
+require('dotenv').config(); 
 
 console.log('DB_HOST:', process.env.DB_HOST);
 console.log('DB_USERNAME:', process.env.DB_USERNAME);
@@ -11,7 +11,8 @@ const config = {
         user: process.env.DB_USERNAME,
         password: process.env.DB_PASSWORD,
         database: process.env.DB_NAME,
-        // dialect: 'mysql' 
+        dialect: 'mysql' ,
+        use_env_variable: process.env.DB_USE_ENV_VARIABLE === 'true',
     },
 }
 
