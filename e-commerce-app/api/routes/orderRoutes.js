@@ -1,7 +1,7 @@
 const express = require('express');
 const { getAllOrders, updateOrderStatus } = require('../controllers/orderController');
-const authenticate = require('../middleware/authenticate');
-const authorize = require('../middleware/authorize');
+const authenticate = require('../middlewares/authenticate');
+const authorize = require('../middlewares/authorize');
 
 const router = express.Router();
 
