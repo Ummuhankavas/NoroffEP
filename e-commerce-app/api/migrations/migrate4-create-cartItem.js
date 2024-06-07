@@ -2,7 +2,7 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('cart_items', {
+    await queryInterface.createTable('CartItems', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,12 +12,22 @@ module.exports = {
       cartId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'carts', key: 'id' }
+        references: {
+          model: 'Carts',
+          key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       productId: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'products', key: 'id' }
+        references: {
+          model: 'Products',
+          key: 'id'
+        },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE'
       },
       quantity: {
         type: Sequelize.INTEGER,
@@ -27,19 +37,19 @@ module.exports = {
         type: Sequelize.FLOAT,
         allowNull: false
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.NOW
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP')
+        defaultValue: Sequelize.NOW
       }
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('cart_items');
+    await queryInterface.dropTable('CartItems');
   }
 };

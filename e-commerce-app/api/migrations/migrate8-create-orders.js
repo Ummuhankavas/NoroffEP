@@ -1,32 +1,36 @@
+'use strict';
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('products', {
+    await queryInterface.createTable('Orders', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      order_number: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      description: {
-        type: Sequelize.TEXT,
-        allowNull: true
-      },
-      price: {
+      total_amount: {
         type: Sequelize.DECIMAL(10, 2),
         allowNull: false
       },
-      quantity: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0
+      status: {
+        type: Sequelize.ENUM('pending', 'processing', 'completed', 'cancelled'),
+        defaultValue: 'pending'
       },
-      image: {
+      shipping_address: {
         type: Sequelize.STRING,
+        allowNull: false
+      },
+      payment_status: {
+        type: Sequelize.ENUM('unpaid', 'paid', 'cancelled'),
+        defaultValue: 'unpaid'
+      },
+      delivery_date: {
+        type: Sequelize.DATE,
         allowNull: true
       },
       created_at: {
@@ -42,6 +46,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('products');
+    await queryInterface.dropTable('Orders');
   }
 };
