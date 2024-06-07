@@ -15,7 +15,7 @@ sequelize.authenticate()
 
 const syncDatabase = async () => {
   try {
-    await sequelize.sync({ force: true }); // Bu satırı development aşamasında kullanabilirsiniz. force: true, tabloları yeniden oluşturur.
+    // await sequelize.sync({ force: true }); 
     console.log('Database synchronized successfully.');
   } catch (error) {
     console.error('Error synchronizing the database:', error);
