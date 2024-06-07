@@ -2,19 +2,18 @@ const fs = require('fs');
 const path = require('path');
 const Sequelize = require('sequelize');
 const basename = path.basename(__filename);
-// const env = process.env.NODE_ENV || 'development';
-const config = require('../config/config.js');
+const env = process.env.NODE_ENV || 'development';
+const config = require(__dirname + '/../config/config.js')[env];
 const db = {};
 
 let sequelize;
-if (config.db.use_env_variable) {
-  sequelize = new Sequelize(process.env[config.db.use_env_variable], {
-    dialect: config.db.dialect,
-  });
+
+if (config.use_env_variable) {
+  sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
-  sequelize = new Sequelize(config.db.database, config.db.user, config.db.password, {
-    host: config.db.host,
-    dialect: config.db.dialect,
+  sequelize = new Sequelize(config.database, config.username, config.password, {
+    host: config.host,
+    dialect: config.dialect,
   });
 }
 

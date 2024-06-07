@@ -6,6 +6,7 @@ const config = require("./config/config");
 const { sequelize,syncDatabase } = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+
 const categoryRoutes = require('./routes/categoryRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const productRoutes = require('./routes/productRoutes');
@@ -38,7 +39,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 sequelize.authenticate().then(async () => {
     console.log('Database connection has been established successfully.');
     // Sync database models
-    await sequelize.sync({ force: true }); // Bu satır development aşamasında kullanabilirsiniz. force: true, tabloları yeniden oluşturur.
+    await sequelize.sync({ force: true }); 
     console.log('Database synchronized successfully.');
     app.listen(process.env.PORT || 3000, () => {
         console.log(`Server is running on port ${process.env.PORT || 3000}`);
