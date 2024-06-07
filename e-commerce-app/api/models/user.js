@@ -55,5 +55,10 @@ module.exports = (sequelize) => {
     }
   });
 
+  User.associate = function(models) {
+    User.hasMany(models.Order);
+    User.belongsTo(models.Membership);
+  };
+
   return User;
 };
