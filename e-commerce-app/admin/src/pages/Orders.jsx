@@ -1,9 +1,16 @@
-import React from 'react'
+import React from 'react';
+import Navbar from '../components/navbar/Navbar';
 
-const orders = () => {
+
+function AdminOrders() {
   return (
-    <div>orders</div>
-  )
+    <div style={{ display: 'flex' }}>
+      <Navbar />
+      <main style={{ flexGrow: 1, padding: '20px' }}>
+        Admin Orders Content
+      </main>
+    </div>
+  );
 }
 
-export default orders
+export default AdminOrders;

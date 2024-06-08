@@ -1,9 +1,15 @@
-import React from 'react'
+import React from 'react';
 
-const Brands = () => {
+
+function AdminBrands() {
   return (
-    <div>Brands</div>
-  )
+    <div style={{ display: 'flex' }}>
+     
+      <main style={{ flexGrow: 1, padding: '20px' }}>
+        Admin Brands Content
+      </main>
+    </div>
+  );
 }
 
-export default Brands
+export default AdminBrands;

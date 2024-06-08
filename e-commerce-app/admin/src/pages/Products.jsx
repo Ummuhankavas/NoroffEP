@@ -1,9 +1,15 @@
-import React from 'react'
+import React from 'react';
 
-const Products = () => {
+
+function AdminProducts() {
   return (
-    <div>Products</div>
-  )
+    <div style={{ display: 'flex' }}>
+     
+      <main style={{ flexGrow: 1, padding: '20px' }}>
+        Admin Products Content
+      </main>
+    </div>
+  );
 }
 
-export default Products
+export default AdminProducts;
