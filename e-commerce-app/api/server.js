@@ -5,6 +5,7 @@ const mysql = require("mysql2");
 const config = require("./config/config");
 const { sequelize,syncDatabase } = require('./config/database');
 const userServices = require('./services/userService');
+const authController = require('./controllers/authController');
 const authRoutes = require('./routes/authRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 
@@ -49,6 +50,8 @@ sequelize.authenticate().then(async () => {
     console.error('Unable to connect to the database:', error);
 });
 
+
+
 const userData = {
   "username": "johndoe",
   "email": "johndoe@example.com",
@@ -73,5 +76,6 @@ const userData = {
   createNewUser();
 
 app.get('/', (req, res) => res.send('Hello Noroff Backend!'));
+app.post('/register', authController.registerUser);
 
 module.exports = app;
