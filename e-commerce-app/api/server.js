@@ -7,6 +7,7 @@ const { sequelize,syncDatabase } = require('./config/database');
 const userServices = require('./services/userService');
 const authController = require('./controllers/authController');
 const utilityRoutes = require('./routes/utilityRoutes');
+const searchRoutes = require('./routes/searchRoutes');
 
 
 const authRoutes = require('./routes/authRoutes');
@@ -34,6 +35,10 @@ app.use('/orders', orderRoutes);
 app.use('/membership', membershipRoutes);
 app.use('/users', userRoutes);
 app.use('/utility', utilityRoutes);
+app.use('/search', searchRoutes);
+
+
+
 // Swagger UI
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
