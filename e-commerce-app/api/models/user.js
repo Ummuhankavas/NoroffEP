@@ -41,15 +41,26 @@ module.exports = (sequelize) => {
       type: DataTypes.ENUM('user', 'admin'),
       defaultValue: 'user'
     },
-    membershipStatus: {
-      type: DataTypes.ENUM('bronze', 'silver', 'gold'),
-      defaultValue: 'bronze'
+
+    MembershipId: { 
+      type: DataTypes.INTEGER,
+      allowNull: true, 
+      references: {
+        model: 'Memberships', 
+        key: 'id' 
+      }
     },
-    created_at: {
+
+  
+    // membershipStatus: {
+    //   type: DataTypes.ENUM('bronze', 'silver', 'gold'),
+    //   defaultValue: 'bronze'
+    // },
+    createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
     },
-    updated_at: {
+    updatedAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW
     }

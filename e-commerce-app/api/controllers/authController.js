@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { User } = require('../models');
 const { generateAccessToken } = require('../services/authService');
+const { Op } = require('sequelize');
 
 const registerUser = async (req, res) => {
   try {
