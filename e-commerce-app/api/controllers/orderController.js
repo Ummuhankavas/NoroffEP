@@ -1,6 +1,6 @@
 const Order = require('../models/Order');
 
-// Tüm siparişleri getirme
+// get ordes
 const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.findAll();
@@ -11,7 +11,7 @@ const getAllOrders = async (req, res) => {
   }
 };
 
-// Sipariş durumunu güncelleme
+// updte order
 const updateOrderStatus = async (req, res) => {
   const { id } = req.params;
   try {

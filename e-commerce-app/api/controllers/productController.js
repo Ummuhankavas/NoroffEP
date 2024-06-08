@@ -1,6 +1,6 @@
 const Product = require('../models/Product');
 
-// Yeni bir ürün oluşturma
+// create new product
 const createProduct = async (req, res) => {
   try {
     const { name, description, price, quantity, image } = req.body;
@@ -18,7 +18,7 @@ const createProduct = async (req, res) => {
   }
 };
 
-// Tüm ürünleri getirme
+// get all prodcts
 const getAllProducts = async (req, res) => {
   try {
     const products = await Product.findAll();
@@ -29,7 +29,7 @@ const getAllProducts = async (req, res) => {
   }
 };
 
-// Ürünü güncelleme
+// uppdate product
 const updateProduct = async (req, res) => {
   const { id } = req.params;
   try {
@@ -52,7 +52,7 @@ const updateProduct = async (req, res) => {
   }
 };
 
-// Ürünü silme
+// delete product
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
   try {

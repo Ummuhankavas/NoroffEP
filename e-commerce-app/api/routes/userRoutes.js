@@ -2,7 +2,7 @@ const express = require('express');
 const { getAllUsers, updateUser } = require('../controllers/userController');
 const authenticate = require('../middlewares/authenticate');
 const authorize = require('../middlewares/authorize');
-const userController = require('../controllers/userController'); // Bu satırı kaldırdık.
+const userController = require('../controllers/userController'); 
 
 const router = express.Router();
 
