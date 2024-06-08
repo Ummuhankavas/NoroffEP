@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/navbar/Navbar';
 
+const Orders = () => {
+  const [orders, setOrders] = useState([]);
 
-function AdminOrders() {
+  useEffect(() => {
+    fetch('http://backend.restapi.co.za/items/products')
+      .then(response => response.json())
+      .then(data => setOrders(data));
+  }, []);
+
   return (
-    <div style={{ display: 'flex' }}>
-      <Navbar />
-      <main style={{ flexGrow: 1, padding: '20px' }}>
-        Admin Orders Content
-      </main>
+    <div>
+      <Navbar/>
+      <h1>Orders</h1>
+      <ul>
+        {orders.map(order => (
+          <li key={order.id}>{order.orderNumber}</li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
 
-export default AdminOrders;
+export default Orders;
