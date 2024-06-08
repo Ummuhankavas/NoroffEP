@@ -1,15 +1,27 @@
-import React from 'react';
 
+import React, { useState, useEffect } from 'react';
+import Navbar from '../components/navbar/Navbar';
 
-function AdminBrands() {
+const Brand = () => {
+  const [brands, setBrands] = useState([]);
+
+  useEffect(() => {
+    fetch('http://backend.restapi.co.za/items/brands') 
+      .then(response => response.json())
+      .then(data => setBrands(data)); 
+  }, []);
+
   return (
-    <div style={{ display: 'flex' }}>
-     
-      <main style={{ flexGrow: 1, padding: '20px' }}>
-        Admin Brands Content
-      </main>
+    <div>
+        <Navbar/>
+      <h1>Brands</h1>
+      <ul>
+        {brands.map(brand => (
+          <li key={brand.id}>{brand.name}</li> 
+        ))}
+      </ul>
     </div>
   );
-}
+};
 
-export default AdminBrands;
+export default Brand;

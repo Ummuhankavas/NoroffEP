@@ -1,6 +1,7 @@
 
 
 import React, { useState, useEffect } from 'react';
+import Navbar from '../components/navbar/Navbar';
 
 const User = () => {
   const [user, setUser] = useState({});
@@ -13,6 +14,7 @@ const User = () => {
 
   return (
     <div>
+      <Navbar/>
       <h1>User Profile</h1>
       <p>Name: {user.name}</p>
       <p>Email: {user.email}</p>
