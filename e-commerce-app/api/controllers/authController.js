@@ -8,7 +8,7 @@ const { Op } = require('sequelize');
 const registerUser = async (req, res) => {
   try {
     const { firstName, lastName, username, email, password, address, telephoneNumber } = req.body;
-    console.log(req.body);
+    // console.log(req.body);
 
   if (!firstName || !lastName || !username || !email || !password || !address || !telephoneNumber) {
     return res.status(400).json({ error: 'All fields are required' });

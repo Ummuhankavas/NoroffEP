@@ -6,132 +6,9 @@
     "description": "This API is used for e-commerce transactions."
   },
   "paths": {
-    "/products": {
-      "get": {
-        "summary": "Get all products",
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          }
-        }
-      },
-      "post": {
-        "summary": "Add a new product",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "category": {
-                  "type": "string"
-                },
-                "brand": {
-                  "type": "string"
-                },
-                "imgurl": {
-                  "type": "string",
-                  "format": "url"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "price": {
-                  "type": "number"
-                },
-                "quantity": {
-                  "type": "integer"
-                },
-                "date_added": {
-                  "type": "string",
-                  "format": "date"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          }
-        }
-      },
-      "put": {
-        "summary": "Edit an existing product",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "integer"
-                },
-                "category": {
-                  "type": "string"
-                },
-                "brand": {
-                  "type": "string"
-                },
-                "imgurl": {
-                  "type": "string",
-                  "format": "url"
-                },
-                "name": {
-                  "type": "string"
-                },
-                "description": {
-                  "type": "string"
-                },
-                "price": {
-                  "type": "number"
-                },
-                "quantity": {
-                  "type": "integer"
-                },
-                "date_added": {
-                  "type": "string",
-                  "format": "date"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          }
-        }
-      },
-      "delete": {
-        "summary": "Delete an existing product",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "integer",
-            "format": "int64",
-            "description": "Product ID"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          }
-        }
-      }
-    },
     "/auth/login": {
       "post": {
-        "summary": "User login",
+        "summary": "Log in with username/email and password",
         "parameters": [
           {
             "name": "body",
@@ -143,6 +20,9 @@
                 "username": {
                   "type": "string"
                 },
+                "email": {
+                  "type": "string"
+                },
                 "password": {
                   "type": "string"
                 }
@@ -152,14 +32,17 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful operation"
+            "description": "Successful login"
+          },
+          "400": {
+            "description": "Invalid username/email or password"
           }
         }
       }
     },
     "/auth/register": {
       "post": {
-        "summary": "User registration",
+        "summary": "Register a new user",
         "parameters": [
           {
             "name": "body",
@@ -178,8 +61,7 @@
                   "type": "string"
                 },
                 "email": {
-                  "type": "string",
-                  "format": "email"
+                  "type": "string"
                 },
                 "password": {
                   "type": "string"
@@ -188,6 +70,230 @@
                   "type": "string"
                 },
                 "telephonenumber": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful registration"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/products": {
+      "post": {
+        "summary": "Add a new product",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string"
+                },
+                "brand": {
+                  "type": "string"
+                },
+                "imgurl": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "quantity": {
+                  "type": "integer"
+                },
+                "date_added": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all products",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/categories": {
+      "post": {
+        "summary": "Add a new category",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "get": {
+        "summary": "Get all categories",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "put": {
+        "summary": "Edit a category",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a category",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/cart": {
+      "post": {
+        "summary": "Add a product to the cart",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "type": "integer"
+                },
+                "quantity": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove a product from the cart",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/cart/checkout/now": {
+      "post": {
+        "summary": "Check out the cart",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/orders": {
+      "get": {
+        "summary": "Get all orders for the logged in user or all orders for all users (admin only)",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "put": {
+        "summary": "Change the status of an order (admin only)",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "orderId": {
+                  "type": "integer"
+                },
+                "status": {
                   "type": "string"
                 }
               }
