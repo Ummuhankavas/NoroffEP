@@ -1,14 +1,18 @@
 
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { User } = require('../models');
+const { User } = require('../models/user');
 const { generateAccessToken } = require('../services/authService');
 const { Op } = require('sequelize');
 
 const registerUser = async (req, res) => {
   try {
     const { firstName, lastName, username, email, password, address, telephoneNumber } = req.body;
+    console.log(req.body);
 
+  if (!firstName || !lastName || !username || !email || !password || !address || !telephoneNumber) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
     // Check if user with the same email or username already exists
     const existingUser = await User.findOne({
       where: {
