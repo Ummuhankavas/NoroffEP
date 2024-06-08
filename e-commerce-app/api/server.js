@@ -6,9 +6,11 @@ const config = require("./config/config");
 const { sequelize,syncDatabase } = require('./config/database');
 const userServices = require('./services/userService');
 const authController = require('./controllers/authController');
+const utilityRoutes = require('./routes/utilityRoutes');
+
+
 const authRoutes = require('./routes/authRoutes');
 const cartRoutes = require('./routes/cartRoutes');
-
 const categoryRoutes = require('./routes/categoryRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const productRoutes = require('./routes/productRoutes');
@@ -31,7 +33,7 @@ app.use('/cart', cartRoutes);
 app.use('/orders', orderRoutes);
 app.use('/membership', membershipRoutes);
 app.use('/users', userRoutes);
-
+app.use('/utility', utilityRoutes);
 // Swagger UI
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./swagger.json');
