@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
+const Products = () => {
+  const [products, setProducts] = useState([]);
 
-function AdminProducts() {
+  useEffect(() => {
+    fetch('http://backend.restapi.co.za/items/products')
+      .then(response => response.json())
+      .then(data => setProducts(data));
+  }, []);
+
   return (
-    <div style={{ display: 'flex' }}>
-     
-      <main style={{ flexGrow: 1, padding: '20px' }}>
-        Admin Products Content
-      </main>
+    <div>
+      <h1>Products</h1>
+      <ul>
+        {products.map(product => (
+          <li key={product.id}>{product.name}</li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
 
-export default AdminProducts;
+export default Products;
