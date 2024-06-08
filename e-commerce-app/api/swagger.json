@@ -1,282 +1,205 @@
 {
-    "openapi": "3.0.0",
-    "info": {
-      "title": "E-commerce API",
-      "description": "API for managing an e-commerce application",
-      "version": "1.0.0"
-    },
-    "servers": [
-      {
-        "url": "http://localhost:3000",
-        "description": "Development server"
-      }
-    ],
-    "paths": {
-      "/auth/login": {
-        "post": {
-          "summary": "Login user",
-          "description": "Endpoint to login a user and obtain JWT token",
-          "requestBody": {
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "E-Commerce API",
+    "description": "This API is used for e-commerce transactions."
+  },
+  "paths": {
+    "/products": {
+      "get": {
+        "summary": "Get all products",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a new product",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
             "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "username": {
-                      "type": "string"
-                    },
-                    "password": {
-                      "type": "string"
-                    }
-                  }
+            "schema": {
+              "type": "object",
+              "properties": {
+                "category": {
+                  "type": "string"
+                },
+                "brand": {
+                  "type": "string"
+                },
+                "imgurl": {
+                  "type": "string",
+                  "format": "url"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "quantity": {
+                  "type": "integer"
+                },
+                "date_added": {
+                  "type": "string",
+                  "format": "date"
                 }
               }
             }
-          },
-          "responses": {
-            "200": {
-              "description": "Login successful",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "object",
-                    "properties": {
-                      "token": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            },
-            "400": {
-              "description": "Invalid credentials"
-            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
           }
         }
       },
-      "/auth/register": {
-        "post": {
-          "summary": "Register new user",
-          "description": "Endpoint to register a new user",
-          "requestBody": {
+      "put": {
+        "summary": "Edit an existing product",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
             "required": true,
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "username": {
-                      "type": "string"
-                    },
-                    "password": {
-                      "type": "string"
-                    },
-                    "email": {
-                      "type": "string",
-                      "format": "email"
-                    },
-                    "firstName": {
-                      "type": "string"
-                    },
-                    "lastName": {
-                      "type": "string"
-                    },
-                    "address": {
-                      "type": "string"
-                    },
-                    "telephoneNumber": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "responses": {
-            "200": {
-              "description": "User registered successfully"
-            },
-            "400": {
-              "description": "Invalid request body"
-            }
-          }
-        }
-      },
-      "/products": {
-        "get": {
-          "summary": "Get all products",
-          "description": "Endpoint to retrieve all products",
-          "responses": {
-            "200": {
-              "description": "Successful operation",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Product"
-                    }
-                  }
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "category": {
+                  "type": "string"
+                },
+                "brand": {
+                  "type": "string"
+                },
+                "imgurl": {
+                  "type": "string",
+                  "format": "url"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "price": {
+                  "type": "number"
+                },
+                "quantity": {
+                  "type": "integer"
+                },
+                "date_added": {
+                  "type": "string",
+                  "format": "date"
                 }
               }
             }
           }
-        }
-      },
-      "/products/{productId}": {
-        "get": {
-          "summary": "Get product by ID",
-          "description": "Endpoint to retrieve a product by its ID",
-          "parameters": [
-            {
-              "name": "productId",
-              "in": "path",
-              "description": "ID of the product to retrieve",
-              "required": true,
-              "schema": {
-                "type": "integer"
-              }
-            }
-          ],
-          "responses": {
-            "200": {
-              "description": "Successful operation",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "$ref": "#/components/schemas/Product"
-                  }
-                }
-              }
-            },
-            "404": {
-              "description": "Product not found"
-            }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
           }
         }
       },
-      "/categories": {
-        "get": {
-          "summary": "Get all categories",
-          "description": "Endpoint to retrieve all categories",
-          "responses": {
-            "200": {
-              "description": "Successful operation",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Category"
-                    }
-                  }
-                }
-              }
-            }
+      "delete": {
+        "summary": "Delete an existing product",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int64",
+            "description": "Product ID"
           }
-        }
-      },
-      "/cart": {
-        "get": {
-          "summary": "Get user's cart",
-          "description": "Endpoint to retrieve user's cart items",
-          "responses": {
-            "200": {
-              "description": "Successful operation",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/CartItem"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/membership": {
-        "get": {
-          "summary": "Get all memberships",
-          "description": "Endpoint to retrieve all membership statuses",
-          "responses": {
-            "200": {
-              "description": "Successful operation",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Membership"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "/orders": {
-        "get": {
-          "summary": "Get all orders",
-          "description": "Endpoint to retrieve all orders",
-          "responses": {
-            "200": {
-              "description": "Successful operation",
-              "content": {
-                "application/json": {
-                  "schema": {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Order"
-                    }
-                  }
-                }
-              }
-            }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
           }
         }
       }
     },
-    "components": {
-      "schemas": {
-        "Product": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer"
-            },
-            "name": {
-              "type": "string"
-            },
-            "description": {
-              "type": "string"
-            },
-            "price": {
-              "type": "number"
-            },
-            "stock": {
-              "type": "integer"
+    "/auth/login": {
+      "post": {
+        "summary": "User login",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string"
+                },
+                "password": {
+                  "type": "string"
+                }
+              }
             }
           }
-        },
-        "Category": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "integer"
-            },
-            "name": {
-              "type": "string"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "summary": "User registration",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstname": {
+                  "type": "string"
+                },
+                "lastname": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "password": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "string"
+                },
+                "telephonenumber": {
+                  "type": "string"
+                }
+              }
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
           }
         }
       }
     }
+  }
 }
-    
-  
