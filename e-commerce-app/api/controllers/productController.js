@@ -1,83 +1,70 @@
+const Product = require('../models/Product');
 
-const { Product, Category, Brand } = require('../models');
-
+// Yeni bir ürün oluşturma
 const createProduct = async (req, res) => {
   try {
-    const { name, description, price, quantity, categoryId, brandId, imgurl } = req.body;
-
+    const { name, description, price, quantity, image } = req.body;
     const product = await Product.create({
       name,
       description,
       price,
       quantity,
-      categoryId,
-      brandId,
-      imgurl
+      image
     });
-
-    return res.status(201).json({ message: 'Product created', product });
+    res.status(201).json({ success: true, data: product });
   } catch (error) {
-    console.error('Error creating product:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 };
 
+// Tüm ürünleri getirme
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.findAll({
-      include: [{ model: Category }, { model: Brand }]
-    });
-
-    return res.status(200).json({ products });
+    const products = await Product.findAll();
+    res.json({ success: true, data: products });
   } catch (error) {
-    console.error('Error fetching products:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 };
 
+// Ürünü güncelleme
 const updateProduct = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-    const { name, description, price, quantity, categoryId, brandId, imgurl } = req.body;
-
+    const { name, description, price, quantity, image } = req.body;
     const product = await Product.findByPk(id);
-
     if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
+      return res.status(404).json({ success: false, error: 'Product not found' });
     }
-
-    product.name = name;
-    product.description = description;
-    product.price = price;
-    product.quantity = quantity;
-    product.categoryId = categoryId;
-    product.brandId = brandId;
-    product.imgurl = imgurl;
-    await product.save();
-
-    return res.status(200).json({ message: 'Product updated', product });
+    await product.update({
+      name,
+      description,
+      price,
+      quantity,
+      image
+    });
+    res.json({ success: true, data: product });
   } catch (error) {
-    console.error('Error updating product:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 };
 
+// Ürünü silme
 const deleteProduct = async (req, res) => {
+  const { id } = req.params;
   try {
-    const { id } = req.params;
-
     const product = await Product.findByPk(id);
-
     if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
+      return res.status(404).json({ success: false, error: 'Product not found' });
     }
-
     await product.destroy();
-
-    return res.status(200).json({ message: 'Product deleted' });
+    res.json({ success: true, data: {} });
   } catch (error) {
-    console.error('Error deleting product:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 };
 
