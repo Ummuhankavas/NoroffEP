@@ -1,63 +1,58 @@
-const { Membership } = require('../models');
+const Membership = require('../models/Membership');
 
+// GetAllMemebership
 const getAllMemberships = async (req, res) => {
   try {
     const memberships = await Membership.findAll();
-    return res.status(200).json({ memberships });
+    res.json({ success: true, data: memberships });
   } catch (error) {
-    console.error('Error fetching memberships:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 };
 
+// Create Memmebership
 const createMembership = async (req, res) => {
+  const { name, min_items, max_items, discount } = req.body;
   try {
-    const { name, min_items, max_items, discount } = req.body;
-    const newMembership = await Membership.create({ name, min_items, max_items, discount });
-    return res.status(201).json({ membership: newMembership });
+    const membership = await Membership.create({ name, min_items, max_items, discount });
+    res.status(201).json({ success: true, data: membership });
   } catch (error) {
-    console.error('Error creating membership:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 };
 
+// update
 const updateMembership = async (req, res) => {
+  const { id } = req.params;
+  const { name, min_items, max_items, discount } = req.body;
   try {
-    const membershipId = req.params.id;
-    const { name, min_items, max_items, discount } = req.body;
-    
-    // Üyelik bilgisini veritabanında güncelle
-    const updatedMembership = await Membership.update(
-      { name, min_items, max_items, discount },
-      { where: { id: membershipId } }
-    );
-    
-    if (updatedMembership[0] === 1) {
-      return res.status(200).json({ message: 'Membership updated successfully' });
-    } else {
-      return res.status(404).json({ error: 'Membership not found' });
+    const membership = await Membership.findByPk(id);
+    if (!membership) {
+      return res.status(404).json({ success: false, error: 'Membership not found' });
     }
+    await membership.update({ name, min_items, max_items, discount });
+    res.json({ success: true, data: membership });
   } catch (error) {
-    console.error('Error updating membership:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 };
 
+// delete
 const deleteMembership = async (req, res) => {
+  const { id } = req.params;
   try {
-    const membershipId = req.params.id;
-    
-    // Üyeliği veritabanından sil
-    const deletedMembershipCount = await Membership.destroy({ where: { id: membershipId } });
-    
-    if (deletedMembershipCount === 1) {
-      return res.status(200).json({ message: 'Membership deleted successfully' });
-    } else {
-      return res.status(404).json({ error: 'Membership not found' });
+    const membership = await Membership.findByPk(id);
+    if (!membership) {
+      return res.status(404).json({ success: false, error: 'Membership not found' });
     }
+    await membership.destroy();
+    res.json({ success: true, message: 'Membership deleted successfully' });
   } catch (error) {
-    console.error('Error deleting membership:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 };
 
