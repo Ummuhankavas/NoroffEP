@@ -1,86 +1,42 @@
+const Cart = require('../models').Cart;
 
-const { Cart, Product } = require('../models');
-
+// add items
 const addToCart = async (req, res) => {
+  const { image, description, quantity, price } = req.body;
   try {
-    const { productId, quantity } = req.body;
-    const userId = req.user.id;
-
-    const product = await Product.findByPk(productId);
-
-    if (!product) {
-      return res.status(404).json({ error: 'Product not found' });
-    }
-
-    if (product.quantity < quantity) {
-      return res.status(400).json({ error: 'Not enough product in stock' });
-    }
-
-    const cartItem = await Cart.findOne({
-      where: { userId, productId, checkedOut: false }
-    });
-
-    if (cartItem) {
-      cartItem.quantity += quantity;
-      await cartItem.save();
-    } else {
-      await Cart.create({
-        userId,
-        productId,
-        quantity,
-        unitPrice: product.price
-      });
-    }
-
-    return res.status(201).json({ message: 'Product added to cart' });
+    const cartItem = await Cart.create({ image, description, quantity, price });
+    res.status(201).json({ success: true, data: cartItem });
   } catch (error) {
-    console.error('Error adding to cart:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 };
 
+// get cart items
 const getCartItems = async (req, res) => {
   try {
-    const userId = req.user.id;
-    const cartItems = await Cart.findAll({
-      where: { userId, checkedOut: false },
-      include: [{ model: Product }]
-    });
-
-    return res.status(200).json({ cartItems });
+    const cartItems = await Cart.findAll();
+    res.json({ success: true, data: cartItems });
   } catch (error) {
-    console.error('Error fetching cart items:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 };
 
 const checkoutCart = async (req, res) => {
   try {
-    const userId = req.user.id;
-    const cartItems = await Cart.findAll({
-      where: { userId, checkedOut: false },
-      include: [{ model: Product }]
-    });
+    const productIds = req.body.productIds; 
 
-    if (cartItems.length === 0) {
-      return res.status(400).json({ error: 'Cart is empty' });
-    }
+  //  delete.. 
+    await Cart.destroy({ where: { id: productIds } }); 
 
-    for (const item of cartItems) {
-      item.checkedOut = true;
-      await item.save();
-
-      const product = await Product.findByPk(item.productId);
-      product.quantity -= item.quantity;
-      await product.save();
-    }
-
-    return res.status(200).json({ message: 'Cart checked out successfully' });
+    res.json({ success: true, message: 'Selected products removed from cart successfully' });
   } catch (error) {
-    console.error('Error checking out cart:', error);
-    return res.status(500).json({ error: 'Internal server error' });
+    console.error(error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 };
+
 
 module.exports = {
   addToCart,
