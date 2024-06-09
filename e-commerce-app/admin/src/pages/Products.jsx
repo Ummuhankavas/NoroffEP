@@ -7,16 +7,31 @@ const Products = () => {
   useEffect(() => {
     fetch('http://backend.restapi.co.za/items/products')
       .then(response => response.json())
-      .then(data => setProducts(data));
+      .then(data => {
+        const productsArray = data.products;
+        setProducts(productsArray);
+      })
+      .catch(error => {
+        console.error('Error fetching products:', error);
+      });
   }, []);
 
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <h1>Products</h1>
       <ul>
         {products.map(product => (
-          <li key={product.id}>{product.name}</li>
+          <li key={product.id}>
+            <img src={product.imgurl} alt={product.name} />
+            <h3>{product.name}</h3>
+            <p>{product.description}</p>
+            <p>Price: ${product.price}</p>
+            <p>Quantity: {product.quantity}</p>
+            <p>Brand: {product.brand}</p>
+            <p>Category: {product.category}</p>
+            <p>Date Added: {product.date_added}</p>
+          </li>
         ))}
       </ul>
     </div>
