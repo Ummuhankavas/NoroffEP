@@ -72,6 +72,9 @@ YouTube tutorials for assistance with admin panel development.
 ChatGPT for guidance on folder structure, database connection, and API operations.
 
 
+Thank you NOROFF BACKEND....
+
+
 
 
 
