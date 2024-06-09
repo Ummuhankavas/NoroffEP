@@ -11,6 +11,7 @@ const searchRoutes = require('./routes/searchRoutes');
 
 
 const authRoutes = require('./routes/authRoutes');
+const adminRoutes = require('./routes/admin');
 const cartRoutes = require('./routes/cartRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const orderRoutes = require('./routes/orderRoutes');
@@ -36,7 +37,7 @@ app.use('/membership', membershipRoutes);
 app.use('/users', userRoutes);
 app.use('/utility', utilityRoutes);
 app.use('/search', searchRoutes);
-
+app.use('/api', adminRoutes);
 
 
 // Swagger UI
